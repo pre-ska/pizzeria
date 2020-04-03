@@ -19,9 +19,18 @@ const OrderStyled = styled.div`
   flex-direction: column;
 `;
 
-const OrderContent = styled.div`
+const OrderContent = styled(DialogContent)`
   padding: 20px;
   height: 100%;
+`;
+
+const OrderContainer = styled.div`
+  padding: 10px 0;
+  border-bottom: 1px solid gray;
+`;
+
+const OrderItem = styled.div`
+  padding: 10px 0;
 `;
 
 export function Order({ orders }) {
@@ -30,7 +39,14 @@ export function Order({ orders }) {
       {orders.length === 0 ? (
         <OrderContent>Your order is empty!</OrderContent>
       ) : (
-        <OrderContent>kolicina {orders.length}</OrderContent>
+        <OrderContent>
+          <OrderContainer>Your order: </OrderContainer>
+          {orders.map(order => (
+            <OrderContainer>
+              <OrderItem>{order.name}</OrderItem>
+            </OrderContainer>
+          ))}
+        </OrderContent>
       )}
 
       <DialogFooter>
