@@ -6,6 +6,8 @@ import { Title } from "../Styles/Title";
 import { formatPrice } from "../Data/FoodData";
 import { QuantityInput } from "./QuantityInput";
 import { useQuantity } from "../Hooks/useQuantity";
+import { Toppings } from "./Toppings";
+import { useToppings } from "../Hooks/useToppings";
 
 const Dialog = styled.div`
   width: 500px;
@@ -24,6 +26,7 @@ export const DialogContent = styled.div`
   overflow: auto;
   min-height: 100px;
   padding: 0 40px;
+  padding-bottom: 80px;
 `;
 
 export const DialogFooter = styled.div`
@@ -69,8 +72,18 @@ const DialogBannerName = styled(FoodLabel)`
   padding: 5px 40px;
 `;
 
+const pricePerTopping = 0.5; //5-13
+
 export function getPrice(order) {
-  return order.price * order.quantity;
+  return (
+    order.quantity *
+    (order.price +
+      order.toppings.filter((t) => t.checked).length * pricePerTopping)
+  );
+}
+
+function hasToppings(food) {
+  return food.section === "Pizza";
 }
 
 export function FoodDialogContainer({
@@ -80,6 +93,7 @@ export function FoodDialogContainer({
   setOrders,
 }) {
   const quantity = useQuantity(openFood && openFood.quantity);
+  const toppings = useToppings(openFood.toppings);
 
   function close() {
     setOpenFood();
@@ -88,6 +102,7 @@ export function FoodDialogContainer({
   const order = {
     ...openFood,
     quantity: quantity.value,
+    toppings: toppings.toppings,
   };
 
   function addToOrder() {
@@ -104,6 +119,12 @@ export function FoodDialogContainer({
         </DialogBanner>
         <DialogContent>
           <QuantityInput quantity={quantity} />
+          {hasToppings(openFood) && (
+            <>
+              <h3>Would you like toppings?</h3>
+              <Toppings {...toppings} />
+            </>
+          )}
         </DialogContent>
         <DialogFooter>
           <ConfirmButton onClick={addToOrder}>
