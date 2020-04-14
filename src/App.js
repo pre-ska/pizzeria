@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Navbar } from "./NavBar/Navbar";
 import { Banner } from "./Banner/Banner";
 import { Menu } from "./Menu/Menu";
@@ -10,15 +10,15 @@ import { useOrders } from "./Hooks/useOrders";
 import { useTitle } from "./Hooks/useTitle";
 
 function App() {
-  const openFood = useOpenFood();
-  const orders = useOrders();
+  const openFood = useOpenFood(); // openFood, setOpenFood - hook useOpenFood
+  const orders = useOrders(); // orders, setOrders - hook useOrders vrati array narudzbi.... orders
   useTitle({ ...openFood, ...orders });
   return (
     <>
       <GlobalStyle />
       <FoodDialog {...openFood} {...orders} />
       <Navbar />
-      <Order {...orders} />
+      <Order {...openFood} {...orders} />
       <Banner />
       <Menu {...openFood} />
     </>

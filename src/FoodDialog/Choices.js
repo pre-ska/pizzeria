@@ -16,7 +16,7 @@ export function Choices({ openFood, choiceRadio }) {
     <>
       <h3>Choose one</h3>
       {openFood.choices.map((choice) => (
-        <>
+        <div key={choice}>
           <RadioInput
             type="radio"
             id={choice}
@@ -26,7 +26,7 @@ export function Choices({ openFood, choiceRadio }) {
             onChange={choiceRadio.onChange}
           />
           <Label htmlFor={choice}>{choice}</Label>
-        </>
+        </div>
       ))}
     </>
   );
