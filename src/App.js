@@ -9,10 +9,13 @@ import { useOpenFood } from "./Hooks/useOpenFood";
 import { useOrders } from "./Hooks/useOrders";
 import { useTitle } from "./Hooks/useTitle";
 import { useAuthentication } from "./Hooks/useAuthntication";
+import { OrderDialog } from "./Order/OrderDialog";
+import { useOrderDialog } from "./Hooks/useOrderDialog";
 
 function App() {
   const openFood = useOpenFood(); // openFood, setOpenFood - hook useOpenFood
   const orders = useOrders(); // orders, setOrders - hook useOrders vrati array narudzbi.... orders
+  const orderDialog = useOrderDialog();
 
   const auth = useAuthentication();
 
@@ -20,9 +23,10 @@ function App() {
   return (
     <>
       <GlobalStyle />
+      <OrderDialog {...orderDialog} {...orders} />
       <FoodDialog {...openFood} {...orders} />
       <Navbar {...auth} />
-      <Order {...openFood} {...orders} {...auth} />
+      <Order {...openFood} {...orders} {...auth} {...orderDialog} />
       <Banner />
       <Menu {...openFood} />
     </>
