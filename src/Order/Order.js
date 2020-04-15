@@ -8,6 +8,8 @@ import {
 } from "../FoodDialog/FoodDialog";
 import { formatPrice } from "../Data/FoodData";
 
+const database = window.firebase.database();
+
 const OrderStyled = styled.div`
   position: fixed;
   right: 0px;
@@ -51,6 +53,37 @@ const DetailItem = styled.div`
   color: gray;
   font-size: 10px;
 `;
+
+function sendOrder(orders, { email, displayName }) {
+  const newOrderRef = database.ref("orders").push();
+
+  const newOrders = orders.map((order) => {
+    return Object.keys(order).reduce((acc, orderKey) => {
+      if (!order[orderKey]) {
+        //undefined value
+        return acc;
+      }
+      if (orderKey === "toppings") {
+        return {
+          ...acc,
+          [orderKey]: order[orderKey]
+            .filter(({ checked }) => checked)
+            .map(({ name }) => name),
+        };
+      }
+      return {
+        ...acc,
+        [orderKey]: order[orderKey],
+      };
+    }, {});
+  });
+
+  newOrderRef.set({
+    order: newOrders,
+    email,
+    displayName,
+  });
+}
 
 export function Order({ orders, setOrders, setOpenFood, login, loggedIn }) {
   const subtotal = orders.reduce((total, order) => {
@@ -129,9 +162,9 @@ export function Order({ orders, setOrders, setOpenFood, login, loggedIn }) {
         <ConfirmButton
           onClick={() => {
             if (loggedIn) {
-              console.log("logged in");
+              // console.log("logged in");
               // setOpenOrderDialog(true)
-              // sendorder(orders, loggedIn)
+              sendOrder(orders, loggedIn);
             } else {
               login();
               // login(setOpenorderDialog)
