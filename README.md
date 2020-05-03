@@ -9,7 +9,7 @@
 ##### Requires Google (Gmail) account
 
 <p align="center">
-  <img width="703" height="299" src="https://i.imgur.com/O2i5xKA.png">
+  <img width="703" height="299" src="https://i.imgur.com/TQuy4Ke.jpg">
 </p>
 
 Technologies used in this project:
